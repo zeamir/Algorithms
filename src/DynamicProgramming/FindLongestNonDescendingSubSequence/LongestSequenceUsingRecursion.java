@@ -1,6 +1,7 @@
-package DynamicProgramming;
+package DynamicProgramming.FindLongestNonDescendingSubSequence;
 
-public class FindLongestNonDescendingSequence {
+//https://leetcode.com/problems/longest-increasing-subsequence/solution/
+public class LongestSequenceUsingRecursion {
     public static void main(String[] args) {
         //int[] array = new int[]{0, 8, 4, 12, 2, 10, 6, 14, 1, 9}; //4
         int[] array = new int[]{0, 4,8, 4, 12, 2, 10, 6, 14, 1, 9};
