@@ -2,11 +2,13 @@ package DynamicProgramming.FindLongestNonDescendingSubSequence;
 
 import java.util.Arrays;
 
+// original question is take from the Elements of Programming interviews in Java - question 16.2.
+// very similar to this question.
 //https://leetcode.com/problems/longest-increasing-subsequence/solution/
 public class LongestSequenceUsingDynamicProgramming {
 
     public static void main(String []args) {
-        int[] arr = new int[] {0, 8, 4, 12, 2, 10, 6, 14, 1, 9};
+        int[] arr = new int[] {0, 0, 0, 8, 4, 12, 2, 10, 6, 14, 1, 9};
         System.out.println("longest subsuq = " + findLongestSubSeq(arr));
     }
     private static int findLongestSubSeq(int[] arr) {

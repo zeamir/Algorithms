@@ -1,10 +1,12 @@
 package DynamicProgramming.FindLongestNonDescendingSubSequence;
 
+// original question is take from the Elements of Programming interviews in Java - question 16.2.
+// very similar to this question.
 //https://leetcode.com/problems/longest-increasing-subsequence/solution/
 public class LongestSequenceUsingRecursion {
     public static void main(String[] args) {
         //int[] array = new int[]{0, 8, 4, 12, 2, 10, 6, 14, 1, 9}; //4
-        int[] array = new int[]{0, 4,8, 4, 12, 2, 10, 6, 14, 1, 9};
+        int[] array = new int[]{0, 4,8, 4, 12, 2, 2, 10, 6, 14, 1, 9};
         Integer[] sequencesMinElement = new Integer[array.length + 1];
         calcSequences(array, 0, sequencesMinElement);
 
