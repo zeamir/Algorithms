@@ -22,14 +22,65 @@ public class ReverseWordsInList {
 		printList(head);
 
 		System.out.println("reverse it...");
-		Node reversed = reverseWords(head);
+		//Node reversed = reverseWords(head);
+		Node reversed = reverseWordsThechniqueB(head);
 		printList(reversed);
 
 		System.out.println("reverse it again...");
-		reversed = reverseWords(reversed);
+		//reversed = reverseWords(reversed);
+		reversed = reverseWordsThechniqueB(reversed);
 		printList(reversed);
 
 	}
+	private static Node reverseWordsThechniqueB(Node head) {
+		Node lastLetter = null;
+		Node endOfList = null;
+		Node curr = head;
+		Node next;
+		while (curr != null) {
+			next = curr.next;
+			if (curr.letter != ' ') {
+				// this is a letter.
+				if (lastLetter == null) {
+					// need to add after the end of the list
+					if (endOfList == null) {
+						// list not started yet. add it as the first element
+						head = curr;
+					} else {
+						// list started. need to add it after the end of list
+						endOfList.next = curr;
+						curr.prev = endOfList;
+						// update end of list
+					}
+					endOfList = curr;
+					curr.next = null;
+				} else { // need to add it after the last letter and NOT to the end of the list
+					lastLetter.prev = curr;
+					curr.next = lastLetter;
+					// curr becomes last letter
+					lastLetter = curr;
+				}
+			} else { // space.
+				// space. need to add it to the end of the list
+				//flag that last letter is null again. so that following letters will be added to the end of the list
+				lastLetter = null;
+				if (endOfList == null) {
+					curr = endOfList;
+					head = endOfList;
+					curr.next = null;
+				} else {
+					// add as last element
+					endOfList.next = curr;
+					curr.prev = endOfList;
+					// update end of list
+				}
+				endOfList = curr;
+			}
+			curr = next;
+		}
+		return head;
+	}
+
 
 	private static Node reverseWords(Node head) {
 

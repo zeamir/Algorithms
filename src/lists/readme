@@ -1,0 +1,91 @@
+// O->L->L->E->H->  ->D->L->R->O->W.
+
+08:30
+
+move from left to right.
+keep track of the following cursors in the list:
+- last letter (so that letters immediately after that letter will be added before that letter.
+- end of list (so that any following spaces will be added AFTER the end of the list)
+
+// O->L->L->E->H->  ->D->L->R->O->W.
+
+H->E->L->L->O->  ->W->O->R->L->D
+H->E->L->L->O->  ->W->O->R->L->D
+
+H
+E->H// whenever adding letter before head, the head changes.
+-
+L E H
+-   *
+L L E H
+-     *
+O L L E H
+        *
+now space is added after the end of the list. and the last letter becomes null
+O L L E H _
+          *
+after adding space last letter becomes null. when the lastLetter is null, the next letter is added after the end of the end of the list
+
+08:37 end of algo and starting presudo code
+
+08:37 - 08:48
+Edg cases to handle:
+1. list is empty
+2. list starts with a letter
+
+continue 09:02 - 09:25. finish code: 11min + 23 min: 34 minutes
+total: 34 min + 7 minutes algo: 41 min. don't know if correct.
+
+pseudu code
+-----------
+Node head = null; // this is the parameter we got;
+Node lastLetter = null;
+Node endOfList = null;
+Node current = head;
+char c = nextLetter();
+Node next;
+while (curr != null) {
+	next = curr.next;
+	if (curr.letter != ' ') {
+		// this is a letter.
+		if (lastLetter == null) {
+			// need to add after the end of the list
+			if (endOfList == null) {
+				// list not started yet. add it as the first element
+				head = curr;
+			} else {
+				// list started. need to add it after the end of list
+				endOfList.next = curr;
+				curr.prev = endOfList;
+				// update end of list
+			}
+			endOfList = curr;
+			curr.next = null;
+		} else { // need to add it after the last letter and NOT to the end of the list
+			lastLetter.prev = curr;
+			curr.next = lastLetter;
+			// curr becomes last letter
+			lastLetter = curr;
+		}
+	} else { // space.
+			// space. need to add it to the end of the list
+			//flag that last letter is null again. so that following letters will be added to the end of the list
+			lastLetter = null;
+			if (endOfList == null) {
+				curr = endOfList;
+				head = endOfList;
+				curr.next = null;
+			} else {
+				// add as last element
+				endOfList.next = curr;
+				curr.prev = endOfList;
+				// update end of list
+			}
+			endOfList = curr;
+		}
+		curr = next;
+	}
+}
+return head;
+
+
