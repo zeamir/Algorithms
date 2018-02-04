@@ -47,55 +47,57 @@ public class CakeThief {
 				new CakeType(2, 15)
 		};
 
-		int max = maxDuffelBagCakeValue(cakeTypes, 20);
-		System.out.println("max value = " + max);
+		assertValue(maxDuffelBagCakeValue(cakeTypes, 20), 555);
 		System.out.println("calls          = " + calls);
 		System.out.println("cachedCalls    = " + cachedCalls);
 		System.out.println("nonCachedCalls = " + nonCachedCalls);
 	}
 
+	private static void assertValue(Object actual, Object expected) {
+		if (actual.equals(expected)) {
+			System.out.println("assertion OK");
+		} else {
+			System.out.println("assertion failed: actual: " + actual.toString() + " ; expected: " + expected.toString());
+		}
+
+	}
+
 
 	private static int maxDuffelBagCakeValue(CakeType[] cakeTypes, int capacity) {
 
-		int[][] mem = new int[cakeTypes.length][capacity+1];
-		for (int[] aMem : mem) {
-			Arrays.fill(aMem, -1);
-		}
+		int[] mem = new int[capacity + 1];
+		Arrays.fill(mem, -1);
 
-		return calcMaxValue(0, cakeTypes, capacity, mem);
+		int ret = calcMaxValue(cakeTypes, capacity, mem);
+
+		System.out.println("max cakes value = " + ret);
+
+		return ret;
 	}
 
-	private static int calcMaxValue(int firstTypeIndex, CakeType[] cakeTypes, int remainingCapacity, int[][] mem) {
+	private static int calcMaxValue(CakeType[] cakeTypes, int remainingCapacity, int[] mem) {
 		calls++;
 		int retMax = 0;
 
-		if (firstTypeIndex > cakeTypes.length - 1 || remainingCapacity < 0) {
-			return 0;
-		}
-		if (mem[firstTypeIndex][remainingCapacity] >= 0) {
+		if (mem[remainingCapacity] >= 0) {
 			cachedCalls++;
-			return mem[firstTypeIndex][remainingCapacity];
-		}
+			return mem[remainingCapacity];
 
+		}
 		nonCachedCalls++;
 
-		for (int i = firstTypeIndex; i < cakeTypes.length; i++) {
-			CakeType cakeType = cakeTypes[i];
+		for (CakeType cakeType : cakeTypes) {
 			if (remainingCapacity - cakeType.weight < 0) {
-				mem[firstTypeIndex][remainingCapacity] = 0;
-				return 0;
+				continue;
 			}
-			int totalWithCake = cakeType.value + calcMaxValue(firstTypeIndex, cakeTypes, remainingCapacity - cakeType.weight, mem);
+			int totalWithCake = cakeType.value + calcMaxValue(cakeTypes, remainingCapacity - cakeType.weight, mem);
 
-			int totalWithoutCake = calcMaxValue(firstTypeIndex + 1, cakeTypes, remainingCapacity, mem);
-			// need to store that
-			int maxTotalSoFar = Math.max(totalWithCake, totalWithoutCake);
-			if (maxTotalSoFar > retMax) {
-				retMax = maxTotalSoFar;
+			if (totalWithCake > retMax) {
+				retMax = totalWithCake;
 			}
 
 		}
-		mem[firstTypeIndex][remainingCapacity] = retMax;
+		mem[remainingCapacity] = retMax;
 		return retMax;
 	}
 
