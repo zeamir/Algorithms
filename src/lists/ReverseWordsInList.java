@@ -23,62 +23,88 @@ public class ReverseWordsInList {
 
 		System.out.println("reverse it...");
 		//Node reversed = reverseWords(head);
-		Node reversed = reverseWordsThechniqueB(head);
+		Node reversed = reverseWordsTechniqueB(head);
 		printList(reversed);
 
 		System.out.println("reverse it again...");
 		//reversed = reverseWords(reversed);
-		reversed = reverseWordsThechniqueB(reversed);
+		reversed = reverseWordsTechniqueB(reversed);
 		printList(reversed);
 
 	}
-	private static Node reverseWordsThechniqueB(Node head) {
-		Node lastLetter = null;
-		Node endOfList = null;
+	private static Node reverseWordsTechniqueB(final Node head) {
+		Node lastEntered = null;
+		Node last = null;
 		Node curr = head;
 		Node next;
+
+		Node retHead = calcNewHead(head);
 		while (curr != null) {
+
 			next = curr.next;
-			if (curr.letter != ' ') {
-				// this is a letter.
-				if (lastLetter == null) {
-					// need to add after the end of the list
-					if (endOfList == null) {
-						// list not started yet. add it as the first element
-						head = curr;
-					} else {
-						// list started. need to add it after the end of list
-						endOfList.next = curr;
-						curr.prev = endOfList;
-						// update end of list
+			if (lastEntered == null) {
+				// first element entered. simply add it
+				lastEntered = curr;
+				last = curr;
+				continue;
+			}
+
+			if (curr.letter == ' ') {
+				// last entered is space
+				// add as last element
+				last.next = curr;
+				curr.prev = last;
+				// flag it as the new lastEntered
+				lastEntered = curr;
+				// flag it as lastNode
+				last = curr;
+			} else {
+				// add a letter
+				if (lastEntered.letter != ' ') {
+					// when adding a letter after a letter, it needs to be added BEFORE that letter.
+					// the new letter also has to be connected to letter before the letter it was connected to
+					if (lastEntered.prev != null) {//maybe we need to save the last space entered
+						lastEntered.prev.next = curr;
+						curr.prev = lastEntered.prev;
 					}
-					endOfList = curr;
-					curr.next = null;
-				} else { // need to add it after the last letter and NOT to the end of the list
-					lastLetter.prev = curr;
-					curr.next = lastLetter;
-					// curr becomes last letter
-					lastLetter = curr;
-				}
-			} else { // space.
-				// space. need to add it to the end of the list
-				//flag that last letter is null again. so that following letters will be added to the end of the list
-				lastLetter = null;
-				if (endOfList == null) {
-					curr = endOfList;
-					head = endOfList;
-					curr.next = null;
+					lastEntered.prev = curr;
+					curr.next = lastEntered;
+					lastEntered = curr;
+					// last node does not change
 				} else {
-					// add as last element
-					endOfList.next = curr;
-					curr.prev = endOfList;
-					// update end of list
+					// when adding a letter after a space, the letter need to be added AFTER the space
+					lastEntered.next = curr;
+					curr.prev = lastEntered;
+					lastEntered = curr;
+					last = curr;
 				}
-				endOfList = curr;
 			}
 			curr = next;
 		}
-		return head;
+		if (last != null) {
+			last.next = null;
+		}
+		if (retHead != null) {
+			retHead.prev = null;
+		}
+		return retHead;
+	}
+
+	private static Node calcNewHead(Node head) {
+		// if head is null return head
+		Node ret;
+		if (head == null || head.letter == ' ') {
+			ret = head;
+		} else {
+			// find the first space. if there is such, then the new head is the node before that.
+			// if not found the new head is the last element
+			Node curr = head;
+			while (curr.next != null && curr.next.letter != ' ') {
+				curr = curr.next;
+			}
+			ret = curr;
+		}
+		return ret;
 	}
 
 
