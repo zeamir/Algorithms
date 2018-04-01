@@ -12,17 +12,14 @@ class HouseRobber {
 		if (nums.length == 0) {
 			return 0;
 		}
-		int maxExcludingPrev = 0;
-		int maxIncludingPrev = 0;
+		int maxBeforePrev = 0;
+		int maxPrev = 0;
 
 		for (int num : nums) {
-			int maxWithCurrentCell = maxExcludingPrev + num;
-			if (maxWithCurrentCell < maxIncludingPrev) {
-				maxWithCurrentCell = maxIncludingPrev;
-			}
-			maxExcludingPrev = maxIncludingPrev;
-			maxIncludingPrev = maxWithCurrentCell;
+			int maxCurrent = Math.max(maxBeforePrev + num, maxPrev);
+			maxBeforePrev = maxPrev;
+			maxPrev = maxCurrent;
 		}
-		return maxIncludingPrev;
+		return maxPrev;
 	}
 }
