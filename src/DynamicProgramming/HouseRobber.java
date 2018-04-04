@@ -1,6 +1,6 @@
 package DynamicProgramming;
+
 //https://leetcode.com/problems/house-robber/description/
-@SuppressWarnings("Duplicates")
 class HouseRobber {
 
 	public static void main(String[] args) {
