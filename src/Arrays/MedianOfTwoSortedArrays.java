@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 // calculate median of two arrays.
 // https://www.geeksforgeeks.org/median-of-two-sorted-arrays/
-public class FindMedian {
+public class MedianOfTwoSortedArrays {
 
 
 	static int getMedian(int ar1[], int ar2[], int n) {
