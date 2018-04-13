@@ -24,17 +24,36 @@ public class BinarySearchForAFixedPoint {
 	private static int cntBinarySearchFixedPointDistinctValues = 0;
 
 	public static void main(String[] args) {
-		int[] arr = new int[10000];
+		int[] arr = new int[1000];
 		for (int i = 0; i < arr.length; i++) {
-			arr[i] = i * 2 + 1;
+			arr[i] = (1+i/50) * 50;
 		}
+		arr[0] = -1;
 		int ret = binarySearchFixedPointWithDuplicates(arr, 0, arr.length - 1);
-		System.out.println("returned: " + ret);
+		System.out.println("binarySearchFixedPointWithDuplicates returned: " + ret);
+
+		System.out.println("linerSearchFixedPoint returned: " + linearSearchFixedPoint(arr));
 
 		ret = binarySearchFixedPointDistinctValues(arr, 0, arr.length - 1);
 		System.out.println("returned: " + ret);
 	}
 
+	private static int linearSearchFixedPoint(int arr[]) {
+		int from = 0;
+		int cnt = 0;
+		while (from < arr.length) {
+			cnt++;
+			if (arr[from] == from) {
+				System.out.println("**** linearSearchFixedPoint completed after " + cnt + " iterations.");
+				return from;
+			} else {
+				from = Math.max(arr[from], from + 1);
+			}
+		}
+		System.out.println("**** linearSearchFixedPoint completed after " + cnt + " iterations.");
+		return -1;
+
+	}
 	private static int binarySearchFixedPointDistinctValues(int arr[], int low, int high) {
 		System.out.println(cntBinarySearchFixedPointDistinctValues++ + ": binarySearchFixedPointDistinctValues called; low =  " + low + "; high = " + high);
 
@@ -55,7 +74,8 @@ public class BinarySearchForAFixedPoint {
 	}
 
 	private static int binarySearchFixedPointWithDuplicates(int arr[], int low, int high) {
-		System.out.println(cntBinarySearchFixedPointWithDuplicates++ + ": binarySearchWithDuplicatesAllowed called; low =  " + low + "; high = " + high);
+		cntBinarySearchFixedPointWithDuplicates++;
+		//System.out.println(cntBinarySearchFixedPointWithDuplicates + ": binarySearchWithDuplicatesAllowed called; low =  " + low + "; high = " + high);
 		if (high < low)
 			return -1;
 
@@ -66,19 +86,28 @@ public class BinarySearchForAFixedPoint {
 			return mid;
 
 		/* Search left */
-		int leftIndex = Math.min(mid - 1, midValue);
-		System.out.println("search left...");
+		int leftIndex = Math.min(mid - 1, midValue);//mid value is 3 and mid-1 is 4
+		if (leftIndex < mid - 1) {
+			System.out.println("left range reduced by: " + ((mid - 1) - leftIndex));
+		}
+		//System.out.println("search left...");
 		int left = binarySearchFixedPointWithDuplicates(arr, low, leftIndex);
 
-		if (left >= 0)
+		if (left >= 0) {
+			System.out.println("****  binarySearchWithDuplicatesAllowed completed after " + cntBinarySearchFixedPointWithDuplicates + " iterations. ");
 			return left;
+		}
 
 		/*Search right */
-		System.out.println("search right...");
+		//System.out.println("search right...");
 		int rightIndex = Math.max(mid + 1, midValue);
+		if (rightIndex > mid + 1) {
+			System.out.println("right range reduced by: " + (rightIndex - (mid - 1)));
+		}
 
 		int right = binarySearchFixedPointWithDuplicates(arr, rightIndex, high);
 
+		System.out.println("****  binarySearchWithDuplicatesAllowed completed after " + cntBinarySearchFixedPointWithDuplicates + " iterations. ");
 		return right;
 	}
 
